@@ -13,15 +13,15 @@ class SceneMainMenu extends Phaser.Scene {
 	this.load.image("sprBtnRestartHover", "content/sprBtnRestartHover.png");
 	this.load.image("sprBtnRestartDown", "content/sprBtnRestartDown.png");
 
-	this.load.audio("sndBtnOver", "content/sndBtnOver.wav");
-	this.load.audio("sndBtnDown", "content/sndBtnDown.wav");
+	// this.load.audio("sndBtnOver", "content/sndBtnOver.wav");
+	// this.load.audio("sndBtnDown", "content/sndBtnDown.wav");
   }
 
   create() {
-    this.sfx = {
-	  btnOver: this.sound.add("sndBtnOver"),
-	  btnDown: this.sound.add("sndBtnDown")
-	};
+ //    this.sfx = {
+	//   btnOver: this.sound.add("sndBtnOver"),
+	//   btnDown: this.sound.add("sndBtnDown")
+	// };
 
 	this.btnPlay = this.add.sprite(
 	  this.game.config.width * 0.5,
@@ -33,7 +33,7 @@ class SceneMainMenu extends Phaser.Scene {
 
 	this.btnPlay.on("pointerover", function() {
 	  this.btnPlay.setTexture("sprBtnPlayHover"); // set the button texture to sprBtnPlayHover
-	  this.sfx.btnOver.play(); // play the button over sound
+	  // this.sfx.btnOver.play(); // play the button over sound
 	}, this);
 
 	this.btnPlay.on("pointerout", function() {
@@ -42,7 +42,7 @@ class SceneMainMenu extends Phaser.Scene {
 
 	this.btnPlay.on("pointerdown", function() {
 	  this.btnPlay.setTexture("sprBtnPlayDown");
-	  this.sfx.btnDown.play();
+	  // this.sfx.btnDown.play();
 	}, this);
 
 	this.btnPlay.on("pointerup", function() {

@@ -14,10 +14,10 @@ class SceneGameOver extends Phaser.Scene {
 	});
 	this.title.setOrigin(0.5);
     
-    this.sfx = {
-	  btnOver: this.sound.add("sndBtnOver"),
-	  btnDown: this.sound.add("sndBtnDown")
-	};
+ //    this.sfx = {
+	//   btnOver: this.sound.add("sndBtnOver"),
+	//   btnDown: this.sound.add("sndBtnDown")
+	// };
 
 	this.btnRestart = this.add.sprite(
       this.game.config.width * 0.5,
@@ -29,7 +29,7 @@ class SceneGameOver extends Phaser.Scene {
 
     this.btnRestart.on("pointerover", function() {
       this.btnRestart.setTexture("sprBtnRestartHover"); // set the button texture to sprBtnPlayHover
-      this.sfx.btnOver.play(); // play the button over sound
+      // this.sfx.btnOver.play(); // play the button over sound
     }, this);
 
     this.btnRestart.on("pointerout", function() {
@@ -38,7 +38,7 @@ class SceneGameOver extends Phaser.Scene {
 
     this.btnRestart.on("pointerdown", function() {
       this.btnRestart.setTexture("sprBtnRestartDown");
-      this.sfx.btnDown.play();
+      // this.sfx.btnDown.play();
     }, this);
 
     this.btnRestart.on("pointerup", function() {

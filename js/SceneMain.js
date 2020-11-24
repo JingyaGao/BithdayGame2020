@@ -26,9 +26,9 @@ class SceneMain extends Phaser.Scene {
 	  frameHeight: 16
 	});
 
-	this.load.audio("sndExplode0", "content/sndExplode0.wav");
-	this.load.audio("sndExplode1", "content/sndExplode1.wav");
-	this.load.audio("sndLaser", "content/sndLaser.wav");
+	// this.load.audio("sndExplode0", "content/sndExplode0.wav");
+	// this.load.audio("sndExplode1", "content/sndExplode1.wav");
+	// this.load.audio("sndLaser", "content/sndLaser.wav");
   }
 
   create() {
@@ -61,13 +61,13 @@ class SceneMain extends Phaser.Scene {
       repeat: -1
     });
 
-    this.sfx = {
-	  explosions: [
-	    this.sound.add("sndExplode0"),
-	    this.sound.add("sndExplode1")
-	  ],
-	  laser: this.sound.add("sndLaser")
-	};
+ //    this.sfx = {
+	//   explosions: [
+	//     this.sound.add("sndExplode0"),
+	//     this.sound.add("sndExplode1")
+	//   ],
+	//   laser: this.sound.add("sndLaser")
+	// };
 
 	this.backgrounds = [];
 	for (var i = 0; i < 5; i++) { // create five scrolling backgrounds
@@ -82,6 +82,13 @@ class SceneMain extends Phaser.Scene {
 	  this.game.config.height * 0.5,
 	  "sprPlayer"
 	); 
+
+	this.player.setInteractive();
+	this.input.setDraggable(this.player);
+	this.input.on('drag', function(pointer, gameObject, dragX, dragY) {
+		gameObject.x = dragX;
+		gameObject.y = dragY;
+	});
 
 	this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 	this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -196,6 +203,7 @@ class SceneMain extends Phaser.Scene {
 		  this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
 		  this.player.setData("isShooting", false);
 		}
+
 	}
 
 	for (var i = 0; i < this.enemies.getChildren().length; i++) {
