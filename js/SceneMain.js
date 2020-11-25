@@ -26,6 +26,9 @@ class SceneMain extends Phaser.Scene {
 	  frameHeight: 16
 	});
 
+	this.load.image("cat", "content/pink_cat.png");
+
+
 	// this.load.audio("sndExplode0", "content/sndExplode0.wav");
 	// this.load.audio("sndExplode1", "content/sndExplode1.wav");
 	// this.load.audio("sndLaser", "content/sndLaser.wav");
@@ -80,8 +83,12 @@ class SceneMain extends Phaser.Scene {
 	  this,
 	  this.game.config.width * 0.5,
 	  this.game.config.height * 0.5,
-	  "sprPlayer"
+	  //"sprPlayer"
+	  "cat"
 	); 
+
+	this.player.displayWidth=game.config.width*.1; 
+	this.player.scaleY=this.player.scaleX;
 
 	this.player.setInteractive();
 	this.input.setDraggable(this.player);
@@ -104,13 +111,6 @@ class SceneMain extends Phaser.Scene {
 	this.time.addEvent({
 	  delay: 1000,
 	  callback: function() {
-	    // var enemy = new GunShip(
-	    //   this,
-	    //   Phaser.Math.Between(0, this.game.config.width),
-	    //   0
-	    // );
-	    // this.enemies.add(enemy);
-
 	    var enemy = null;
 
 	    if (Phaser.Math.Between(0, 10) >= 3) {
@@ -142,6 +142,10 @@ class SceneMain extends Phaser.Scene {
 	      enemy.setScale(Phaser.Math.Between(10, 20) * 0.1);
 	      this.enemies.add(enemy);
 	    }
+
+	 //    this.player.setData("isShooting", true);
+	 //    this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
+		// this.player.setData("isShooting", false);
 	  },
 	  callbackScope: this,
 	  loop: true

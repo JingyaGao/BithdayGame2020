@@ -47,10 +47,32 @@ class Player extends Entity {
   constructor(scene, x, y, key, type) {
     super(scene, x, y, key);
 	this.setData("speed", 200);
-	this.play("sprPlayer");
+	//this.play("sprPlayer");
 	this.setData("isShooting", false);
 	this.setData("timerShootDelay", 10);
 	this.setData("timerShootTick", this.getData("timerShootDelay") - 1);
+
+	// this.setInteractive()
+ //    scene.input.setDraggable(this)
+ //    scene.input.on('drag', (pointer: any, gameObject: Card, dragX: number, dragY: number) => {
+ //      gameObject.x = dragX;
+ //      gameObject.y = dragY;
+ //    });
+
+ 	this.shootTimer = this.scene.time.addEvent({
+	  delay: 500,
+	  callback: function() {
+	    var laser = new PlayerLaser(
+	      this.scene,
+	      this.x,
+	      this.y
+	    );
+	    laser.setScale(1.5);
+	    this.scene.playerLasers.add(laser);
+	  },
+	  callbackScope: this,
+	  loop: true
+	});
   }
 
 	moveUp() {
@@ -76,16 +98,16 @@ class Player extends Entity {
 		this.y = Phaser.Math.Clamp(this.y, 0, this.scene.game.config.height);
 
 		if (this.getData("isShooting")) {
-		  if (this.getData("timerShootTick") < this.getData("timerShootDelay")) {
-		    this.setData("timerShootTick", this.getData("timerShootTick") + 1); // every game update, increase timerShootTick by one until we reach the value of timerShootDelay
-		  }
-		  else { // when the "manual timer" is triggered:
+		  //if (this.getData("timerShootTick") < this.getData("timerShootDelay")) {
+		  //  this.setData("timerShootTick", this.getData("timerShootTick") + 1); // every game update, increase timerShootTick by one until we reach the value of timerShootDelay
+		  //}
+		  //else { // when the "manual timer" is triggered:
 		    var laser = new PlayerLaser(this.scene, this.x, this.y);
 		    this.scene.playerLasers.add(laser);
 		  
 		    //this.scene.sfx.laser.play(); // play the laser sound effect
 		    this.setData("timerShootTick", 0);
-		  }
+		  //}
 		}
 	}
 
