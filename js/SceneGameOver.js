@@ -5,7 +5,7 @@ class SceneGameOver extends Phaser.Scene {
 
   create() {
 
-  	this.title = this.add.text(this.game.config.width * 0.5, 128, "GAME OVER", {
+  	this.title = this.add.text(this.game.config.width * 0.5, 128, "再试一次吧", {
 	  fontFamily: 'monospace',
 	  fontSize: 48,
 	  fontStyle: 'bold',
@@ -56,7 +56,7 @@ class SceneGameOver extends Phaser.Scene {
 	}
   }
 
-  
+
   update() {
   	for (var i = 0; i < this.backgrounds.length; i++) {
 	  this.backgrounds[i].update();

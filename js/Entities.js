@@ -115,7 +115,16 @@ class Player extends Entity {
 		this.scene.time.addEvent({ // go to game over scene
 		  delay: 1000,
 		  callback: function() {
-		    this.scene.scene.start("SceneGameOver");
+		  	if(this.scene.score < 17 ) {
+		  		this.scene.scene.start("SceneGameOver");
+		  	} else {
+		  		// var t = this.game.time.create(true)
+      //           t.repeat(20,10,shake,this);
+      //           t.start();
+      //           t.onComplete.addOnce(resetCam,this);
+		  		this.scene.scene.start("SceneFallingSpaceShip");
+		  	}
+		    
 		  },
 		  callbackScope: this,
 		  loop: false
@@ -255,4 +264,42 @@ class ScrollingBackground {
       }
     }
   }
+}
+
+class ScoreTracker {
+	constructor() {
+		this.setData("score", 0);
+	}
+
+	update() {
+		this.setData("score", this.getData("score") + 5);
+	}
+}
+
+class EnemyShipBoss extends Entity{
+
+  constructor(scene, x, y) {
+    super(scene, x, y, "sprEnemy2", "EnemyShipBoss");
+    this.body.velocity.y = Phaser.Math.Between(10, 20);
+    this.shootTimer = this.scene.time.addEvent({
+	  delay: 1000,
+	  callback: function() {
+	  	for(var i=3; i<=7; i++) {
+	  		var laser = new EnemyLaser(
+		      this.scene,
+		      this.x * (i/5),
+		      this.y
+		    );
+		    laser.setScale(2.0);
+		    this.scene.enemyLasers.add(laser);
+
+	  	}
+	  },
+	  callbackScope: this,
+	  loop: true
+	});
+
+    this.play("sprEnemy0");
+  }
+
 }

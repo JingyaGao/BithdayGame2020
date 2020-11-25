@@ -22,7 +22,8 @@ var config = {
   scene: [
   	SceneMainMenu,
     SceneMain,
-    SceneGameOver
+    SceneGameOver,
+    SceneFallingSpaceShip
     ],
   pixelArt: true,
   roundPixels: true

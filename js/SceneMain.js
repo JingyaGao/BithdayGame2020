@@ -1,6 +1,9 @@
 class SceneMain extends Phaser.Scene {
   constructor() {
     super({ key: "SceneMain" });
+    this.score = 0;
+    this.scoreText;
+    this.enemyBoss;
   }
 
   preload() {
@@ -35,6 +38,9 @@ class SceneMain extends Phaser.Scene {
   }
 
   create() {
+  	this.score = 0;
+  	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
+  	this.enemyBoss = undefined;
 
   	this.anims.create({
       key: "sprEnemy0",
@@ -143,9 +149,6 @@ class SceneMain extends Phaser.Scene {
 	      this.enemies.add(enemy);
 	    }
 
-	 //    this.player.setData("isShooting", true);
-	 //    this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
-		// this.player.setData("isShooting", false);
 	  },
 	  callbackScope: this,
 	  loop: true
@@ -160,8 +163,9 @@ class SceneMain extends Phaser.Scene {
 
 		  enemy.explode(true);
 		  playerLaser.destroy();
+		  this.updateScore();
 		}
-	});	
+	}, null, this);	
 
 	this.physics.add.overlap(this.player, this.enemies, function(player, enemy) {
 	  if (!player.getData("isDead") &&
@@ -208,6 +212,17 @@ class SceneMain extends Phaser.Scene {
 		  this.player.setData("isShooting", false);
 		}
 
+	}
+
+	if(this.score >= 17 && this.enemyBoss == undefined) {
+		this.enemyBoss = new EnemyShipBoss(
+			this, 
+			this.game.config.width * 0.5,
+		  	0,
+		  	"sprEnemy2"
+		  	);
+		this.enemyBoss.displayWidth=game.config.width*.5;
+		this.enemyBoss.scaleY = this.enemyBoss.scaleX;
 	}
 
 	for (var i = 0; i < this.enemies.getChildren().length; i++) {
@@ -275,4 +290,9 @@ class SceneMain extends Phaser.Scene {
 	  }
 	  return arr;
 	}
+
+  updateScore() {
+  	this.score += 1;
+    this.scoreText.setText('Score: ' + this.score);
+  }
 }
