@@ -285,10 +285,16 @@ class EnemyShipBoss extends Entity{
 	  delay: 1000,
 	  callback: function() {
 	  	for(var i=3; i<=7; i++) {
+	  		var yPos;
+	  		if(i < 5) {
+	  			yPos = 5-i;
+	  		} else {
+	  			yPos = i-5;
+	  		}
 	  		var laser = new EnemyLaser(
 		      this.scene,
 		      this.x * (i/5),
-		      this.y
+		      this.y - yPos*20
 		    );
 		    laser.setScale(2.0);
 		    this.scene.enemyLasers.add(laser);
