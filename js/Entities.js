@@ -245,10 +245,12 @@ class ScrollingBackground {
       // creating two backgrounds will allow a continuous scroll
       var layer = this.scene.add.sprite(0, 0, this.key);
       layer.y = (layer.displayHeight * i);
+      //layer.y = (layer.displayHeight * 1)
       var flipX = Phaser.Math.Between(0, 10) >= 5 ? -1 : 1;
       var flipY = Phaser.Math.Between(0, 10) >= 5 ? -1 : 1;
       layer.setScale(flipX * 2, flipY * 2);
-      layer.setDepth(-5 - (i - 1));
+      //layer.setScale(1, 1);
+      layer.setDepth(3 - (i - 1));
       this.scene.physics.world.enableBody(layer, 0);
       layer.body.velocity.y = this.velocityY;
 
