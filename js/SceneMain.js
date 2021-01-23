@@ -9,6 +9,7 @@ class SceneMain extends Phaser.Scene {
   preload() {
   	this.load.image("sprBg0", "content/sprBg0.png");
   	this.load.image("sprBg1", "content/sprBg1.png");
+  	this.load.image("sprBg2", "content/sprBg2.png");
   	this.load.image("sprBg3", "content/sprBg3.png");
   	this.load.image("sprBg4", "content/sprBg4.png");
   	this.load.image("sprBg5", "content/sprBg5.png");
@@ -41,7 +42,7 @@ class SceneMain extends Phaser.Scene {
   }
 
   create() {
-  	this.add.image(0,0,"sprBg3").setOrigin(0,0);
+  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
   	this.score = 0;
   	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
   	this.enemyBoss = undefined;
@@ -82,13 +83,13 @@ class SceneMain extends Phaser.Scene {
 	//   laser: this.sound.add("sndLaser")
 	// };
 
-	this.backgrounds = [];
-	for (var i = 0; i < 3; i++) { // create five scrolling backgrounds
-	  var keys = ["sprBg5"];
-	  var key = keys[Phaser.Math.Between(0, keys.length - 1)];
-	  var bg = new ScrollingBackground(this, key, i * 10);
-	  this.backgrounds.push(bg);
-	}
+	// this.backgrounds = [];
+	// for (var i = 0; i < 3; i++) { // create five scrolling backgrounds
+	//   var keys = ["sprBg5"];
+	//   var key = keys[Phaser.Math.Between(0, keys.length - 1)];
+	//   var bg = new ScrollingBackground(this, key, i * 10);
+	//   this.backgrounds.push(bg);
+	// }
 
 
     this.player = new Player(
@@ -280,10 +281,10 @@ class SceneMain extends Phaser.Scene {
       }
     }
 
-    // background warping
-    for (var i = 0; i < this.backgrounds.length; i++) {
-      this.backgrounds[i].update();
-    }
+    // // background warping
+    // for (var i = 0; i < this.backgrounds.length; i++) {
+    //   this.backgrounds[i].update();
+    // }
   }
 
   getEnemiesByType(type) {

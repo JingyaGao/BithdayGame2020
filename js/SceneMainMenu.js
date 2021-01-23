@@ -6,6 +6,7 @@ class SceneMainMenu extends Phaser.Scene {
   preload() {
   	this.load.image("sprBg0", "content/sprBg0.png");
 	this.load.image("sprBg1", "content/sprBg1.png");
+	this.load.image("sprBg2", "content/sprBg2.png");
 	this.load.image("sprBg3", "content/sprBg3.png");
 	this.load.image("sprBg4", "content/sprBg4.png");
 	this.load.image("sprBg5", "content/sprBg5.png");
@@ -22,7 +23,7 @@ class SceneMainMenu extends Phaser.Scene {
 
   create() {
 
-  	this.add.image(0,0,"sprBg3").setOrigin(0,0);
+  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
  //    this.sfx = {
 	//   btnOver: this.sound.add("sndBtnOver"),
 	//   btnDown: this.sound.add("sndBtnDown")
@@ -65,18 +66,18 @@ class SceneMainMenu extends Phaser.Scene {
 
 	this.title.setOrigin(0.5);
 
-	this.backgrounds = [];
-	for (var i = 0; i < 3; i++) {
-	  var keys = ["sprBg4", "sprBg1"];
-	  var key = keys[Phaser.Math.Between(0, keys.length - 1)];
-	  var bg = new ScrollingBackground(this, key, i * 8);
-	  this.backgrounds.push(bg);
-	}
+	// this.backgrounds = [];
+	// for (var i = 0; i < 3; i++) {
+	//   var keys = ["sprBg4", "sprBg1"];
+	//   var key = keys[Phaser.Math.Between(0, keys.length - 1)];
+	//   var bg = new ScrollingBackground(this, key, i * 8);
+	//   this.backgrounds.push(bg);
+	// }
   }
 
-  update() {
-  	for (var i = 0; i < this.backgrounds.length; i++) {
-	  this.backgrounds[i].update();
-	}
-  }
+ //  update() {
+ //  	for (var i = 0; i < this.backgrounds.length; i++) {
+	//   this.backgrounds[i].update();
+	// }
+ //  }
 }

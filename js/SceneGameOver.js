@@ -5,7 +5,7 @@ class SceneGameOver extends Phaser.Scene {
 
   create() {
 
-  	this.add.image(0,0,"sprBg3").setOrigin(0,0);
+  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
 
   	this.title = this.add.text(this.game.config.width * 0.5, 128, "再试一次吧", {
 	  fontFamily: 'monospace',
@@ -49,19 +49,19 @@ class SceneGameOver extends Phaser.Scene {
     }, this);
 
 
-    this.backgrounds = [];
-	for (var i = 0; i < 3; i++) {
-	  var keys = ["sprBg4", "sprBg1"];
-	  var key = keys[Phaser.Math.Between(0, keys.length - 1)];
-	  var bg = new ScrollingBackground(this, key, i * 8);
-	  this.backgrounds.push(bg);
-	}
+ //    this.backgrounds = [];
+	// for (var i = 0; i < 3; i++) {
+	//   var keys = ["sprBg4", "sprBg1"];
+	//   var key = keys[Phaser.Math.Between(0, keys.length - 1)];
+	//   var bg = new ScrollingBackground(this, key, i * 8);
+	//   this.backgrounds.push(bg);
+	// }
   }
 
 
   update() {
-  	for (var i = 0; i < this.backgrounds.length; i++) {
-	  this.backgrounds[i].update();
-	}
+ //  	for (var i = 0; i < this.backgrounds.length; i++) {
+	//   this.backgrounds[i].update();
+	// }
   }
 }
