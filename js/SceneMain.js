@@ -34,6 +34,7 @@ class SceneMain extends Phaser.Scene {
 	});
 
 	this.load.image("cat", "content/pink_cat.png");
+	this.load.image("main_spaceship", "content/main_spaceship.png");
 
 
 	// this.load.audio("sndExplode0", "content/sndExplode0.wav");
@@ -96,11 +97,10 @@ class SceneMain extends Phaser.Scene {
 	  this,
 	  this.game.config.width * 0.5,
 	  this.game.config.height * 0.5,
-	  //"sprPlayer"
-	  "cat"
+	  "main_spaceship"
 	); 
 
-	this.player.displayWidth=game.config.width*.1; 
+	this.player.displayWidth=game.config.width*.2; 
 	this.player.scaleY=this.player.scaleX;
 
 	this.player.setInteractive();
