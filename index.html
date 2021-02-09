@@ -4,15 +4,28 @@
     <meta charset="utf-8">
     <meta lang="en-us">
     <title>Space Shooter</title>
+    <style>
+      @font-face {
+        font-family: fondolHei;
+        src: url('content/custom_fonts/FandolHei-Regular.otf');
+        font-weight: 400;
+        font-weight: normal;
+      }
+    </style>
     <script src="js/phaser.js"></script> <!-- the file name should be the same as the Phaser script you added. -->
+<!--     <script src="//cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser.js"></script> -->
   </head>
 
   <body>
+    <div style="font-family:fondolHei; position: absolute; left:-1000px; visibility:hidden;">.</div>
+    <script src="js/dialog_plugin.js"></script>
+    <script src="js/Utility.js"></script>
     <script src="js/Entities.js"></script>
     <script src="js/SceneMainMenu.js"></script>
     <script src="js/SceneMain.js"></script>
     <script src="js/SceneGameOver.js"></script>
     <script src="js/SceneFallingSpaceShip.js"></script>
+    <script src="js/SceneVisualNovel.js"></script>
     <script src="js/game.js"></script>
   </body>
 </html>

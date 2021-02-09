@@ -3,7 +3,19 @@ class SceneFallingSpaceShip extends Phaser.Scene {
     super({ key: "SceneFallingSpaceShip" });
   }
 
+  preload() {
+    this.load.image("sprBg0", "content/sprBg0.png");
+  }
+
   create() {
+    const whiteBackground = this.add.image(480,680,"sprBg0").setAlpha(0);
+
+    this.tweens.add({
+      targets: whiteBackground,
+      duration: 500,
+      alpha: 1
+    });
+
   	this.title = this.add.text(this.game.config.width * 0.5, 128, "飞船被击落\n\n你来到了一个未知的星球……", {
 	  fontFamily: 'monospace',
 	  fontSize: 30,

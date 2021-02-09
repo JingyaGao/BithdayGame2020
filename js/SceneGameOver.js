@@ -5,7 +5,15 @@ class SceneGameOver extends Phaser.Scene {
 
   create() {
 
-  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
+    const whiteBackground = this.add.image(480,680,"sprBg0").setAlpha(0);
+
+    this.tweens.add({
+      targets: whiteBackground,
+      duration: 2000,
+      alpha: 1
+    });
+
+  	//this.add.image(0,0,"sprBg2").setOrigin(0,0);
 
   	this.title = this.add.text(this.game.config.width * 0.5, 128, "再试一次吧", {
 	  fontFamily: 'monospace',

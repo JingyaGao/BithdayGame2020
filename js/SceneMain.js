@@ -1,80 +1,103 @@
 class SceneMain extends Phaser.Scene {
-  constructor() {
-    super({ key: "SceneMain" });
-    this.score = 0;
-    this.scoreText;
-    this.enemyBoss;
-  }
+	constructor() {
+		var config = { key: "SceneMain" };
+		super({ key: "SceneMain" });
+		this.score = 0;
+		this.scoreText;
+		this.enemyBoss;
+	}
 
-  preload() {
-  	this.load.image("sprBg0", "content/sprBg0.png");
-  	this.load.image("sprBg1", "content/sprBg1.png");
-  	this.load.image("sprBg2", "content/sprBg2.png");
-  	this.load.image("sprBg3", "content/sprBg3.png");
-  	this.load.image("sprBg4", "content/sprBg4.png");
-  	this.load.image("sprBg5", "content/sprBg5.png");
-	this.load.spritesheet("sprExplosion", "content/sprExplosion.png", {
-	  frameWidth: 32,
-	  frameHeight: 32
-	});
-	this.load.spritesheet("sprEnemy0", "content/sprEnemy0.png", {
-	  frameWidth: 16,
-	  frameHeight: 16
-	});
-	this.load.image("sprEnemy1", "content/sprEnemy1.png");
-	this.load.spritesheet("sprEnemy2", "content/sprEnemy2.png", {
-	  frameWidth: 16,
-	  frameHeight: 16
-	});
-	this.load.image("sprLaserEnemy0", "content/sprLaserEnemy0.png");
-	this.load.image("sprLaserPlayer", "content/sprLaserPlayer.png");
-	this.load.spritesheet("sprPlayer", "content/sprPlayer.png", {
-	  frameWidth: 16,
-	  frameHeight: 16
-	});
+	preload() {
+		// this.load.image("sprBg0", "content/sprBg0.png");
+		// this.load.image("sprBg1", "content/sprBg1.png");
+		// this.load.image("sprBg2", "content/sprBg2.png");
+		// this.load.image("sprBg3", "content/sprBg3.png");
+		// this.load.image("sprBg4", "content/sprBg4.png");
+		// this.load.image("sprBg5", "content/sprBg5.png");
+		this.load.spritesheet("sprExplosion", "content/sprExplosion.png", {
+			frameWidth: 32,
+			frameHeight: 32
+		});
+		this.load.spritesheet("sprEnemy0", "content/sprEnemy0.png", {
+			frameWidth: 16,
+			frameHeight: 16
+		});
+		this.load.image("sprEnemy1", "content/sprEnemy1.png");
+		this.load.spritesheet("sprEnemy2", "content/sprEnemy2.png", {
+			frameWidth: 16,
+			frameHeight: 16
+		});
+		this.load.image("sprLaserEnemy0", "content/sprLaserEnemy0.png");
+		this.load.image("sprLaserPlayer", "content/sprLaserPlayer.png");
+		this.load.spritesheet("sprPlayer", "content/sprPlayer.png", {
+			frameWidth: 16,
+			frameHeight: 16
+		});
 
-	this.load.image("cat", "content/pink_cat.png");
-	this.load.image("main_spaceship", "content/main_spaceship.png");
+		this.load.image("cat", "content/pink_cat.png");
+		this.load.image("main_spaceship", "content/main_spaceship.png");
+
+		this.load.spritesheet("mainExplosion", "content/Explosion.png", {
+			frameWidth: 288,
+			frameHeight: 288
+		});
 
 
 	// this.load.audio("sndExplode0", "content/sndExplode0.wav");
 	// this.load.audio("sndExplode1", "content/sndExplode1.wav");
 	// this.load.audio("sndLaser", "content/sndLaser.wav");
-  }
+}
 
-  create() {
-  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
-  	this.score = 0;
-  	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
-  	this.enemyBoss = undefined;
+create() {
+	this.cameras.main.setBackgroundColor('#000000')
+	this.add.image(0,0,"sprBg2").setOrigin(0,0);
+	//const whiteBackground = this.add.image(0,0,"whiteBackground").setAlpha(0);
+	const whiteBackground = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"whiteBackground").setAlpha(0);
+    let scaleX = this.cameras.main.width / whiteBackground.width;
+    let scaleY = this.cameras.main.height / whiteBackground.height;
+    let scale = Math.max(scaleX, scaleY)
+    whiteBackground.setScale(scale).setScrollFactor(0);
+    whiteBackground.setDepth(10);
 
-  	this.anims.create({
-      key: "sprEnemy0",
-      frames: this.anims.generateFrameNumbers("sprEnemy0"),
-      frameRate: 20,
-      repeat: -1
-    });
 
-    this.anims.create({
-      key: "sprEnemy2",
-      frames: this.anims.generateFrameNumbers("sprEnemy2"),
-      frameRate: 20,
-      repeat: -1
-    });
+	this.score = 0;
+	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
+	this.enemyBoss = undefined;
 
-    this.anims.create({
-      key: "sprExplosion",
-      frames: this.anims.generateFrameNumbers("sprExplosion"),
-      frameRate: 20,
-      repeat: 0
-    });
+	this.anims.create({
+		key: "sprEnemy0",
+		frames: this.anims.generateFrameNumbers("sprEnemy0"),
+		frameRate: 20,
+		repeat: -1
+	});
 
-    this.anims.create({
-      key: "sprPlayer",
-      frames: this.anims.generateFrameNumbers("sprPlayer"),
-      frameRate: 20,
-      repeat: -1
-    });
+	this.anims.create({
+		key: "sprEnemy2",
+		frames: this.anims.generateFrameNumbers("sprEnemy2"),
+		frameRate: 20,
+		repeat: -1
+	});
+
+	this.anims.create({
+		key: "sprExplosion",
+		frames: this.anims.generateFrameNumbers("sprExplosion"),
+		frameRate: 20,
+		repeat: 0
+	});
+
+	this.anims.create({
+		key: "sprPlayer",
+		frames: this.anims.generateFrameNumbers("sprPlayer"),
+		frameRate: 20,
+		repeat: -1
+	});
+
+	this.anims.create({
+		key: "mainExplosion",
+		frames: this.anims.generateFrameNumbers("mainExplosion"),
+		frameRate: 6,
+		repeat: -1
+	});
 
  //    this.sfx = {
 	//   explosions: [
@@ -93,12 +116,12 @@ class SceneMain extends Phaser.Scene {
 	// }
 
 
-    this.player = new Player(
-	  this,
-	  this.game.config.width * 0.5,
-	  this.game.config.height * 0.5,
-	  "main_spaceship"
-	); 
+	this.player = new Player(
+		this,
+		this.game.config.width * 0.5,
+		this.game.config.height * 0.5,
+		"main_spaceship"
+		); 
 
 	this.player.displayWidth=game.config.width*.2; 
 	this.player.scaleY=this.player.scaleX;
@@ -122,101 +145,110 @@ class SceneMain extends Phaser.Scene {
 	this.playerLasers = this.add.group();
 
 	this.time.addEvent({
-	  delay: 1000,
-	  callback: function() {
-	    var enemy = null;
+		delay: 1000,
+		callback: function() {
+			var enemy = null;
 
-	    if (Phaser.Math.Between(0, 10) >= 3) {
-	      enemy = new GunShip(
-	        this,
-	        Phaser.Math.Between(0, this.game.config.width),
-	        0
-	      );
-	    }
-	    else if (Phaser.Math.Between(0, 10) >= 5) {
-	      if (this.getEnemiesByType("ChaserShip").length < 5) {
+			if (Phaser.Math.Between(0, 10) >= 3) {
+				enemy = new GunShip(
+					this,
+					Phaser.Math.Between(0, this.game.config.width),
+					0
+					);
+			}
+			else if (Phaser.Math.Between(0, 10) >= 5) {
+				if (this.getEnemiesByType("ChaserShip").length < 5) {
 
-	        enemy = new ChaserShip(
-	          this,
-	          Phaser.Math.Between(0, this.game.config.width),
-	          0
-	        );
-	      }
-	    }
-	    else {
-	      enemy = new CarrierShip(
-	        this,
-	        Phaser.Math.Between(0, this.game.config.width),
-	        0
-	      );
-	    }
+					enemy = new ChaserShip(
+						this,
+						Phaser.Math.Between(0, this.game.config.width),
+						0
+						);
+				}
+			}
+			else {
+				enemy = new CarrierShip(
+					this,
+					Phaser.Math.Between(0, this.game.config.width),
+					0
+					);
+			}
 
-	    if (enemy !== null) {
-	      enemy.setScale(Phaser.Math.Between(10, 20) * 0.1);
-	      this.enemies.add(enemy);
-	    }
+			if (enemy !== null) {
+				enemy.setScale(Phaser.Math.Between(10, 20) * 0.1);
+				this.enemies.add(enemy);
+			}
 
-	  },
-	  callbackScope: this,
-	  loop: true
+		},
+		callbackScope: this,
+		loop: true
 	});
 
 	// collisions
 	this.physics.add.collider(this.playerLasers, this.enemies, function(playerLaser, enemy) {
-  		if (enemy) {
-		  if (enemy.onDestroy !== undefined) {
-		    enemy.onDestroy();
-		  }
+		if (enemy) {
+			if (enemy.onDestroy !== undefined) {
+				enemy.onDestroy();
+			}
 
-		  enemy.explode(true);
-		  playerLaser.destroy();
-		  this.updateScore();
+			enemy.explode(true);
+			playerLaser.destroy();
+			this.updateScore();
 		}
 	}, null, this);	
 
 	this.physics.add.overlap(this.player, this.enemies, function(player, enemy) {
-	  if (!player.getData("isDead") &&
-	      !enemy.getData("isDead")) {
-	    player.explode(false);
-		player.onDestroy();
-	    enemy.explode(true);
-	  }
+		if (!player.getData("isDead") &&
+			!enemy.getData("isDead")) {
+			player.explode(false);
+			enemy.explode(true);
+			var tween = player.scene.tweens.add({
+					targets: whiteBackground,
+					duration: 2500,
+					alpha: 1, 
+					onComplete: function(tween, targets) {
+						player.onDestroy();
+					}
+			});
+			//player.onDestroy();
+		}
 	});
 
 	this.physics.add.overlap(this.player, this.enemyLasers, function(player, laser) {
-	  if (!player.getData("isDead") &&
-	      !laser.getData("isDead")) {
-	    player.explode(false);
+		if (!player.getData("isDead") &&
+			!laser.getData("isDead")) {
+			player.explode(false);
+		//this.cameras.main.fade(2000, 0, 0, 0);
 		player.onDestroy();
-	    laser.destroy();
-	  }
+		laser.destroy();
+		}
 	});
-  }
+}
 
-  update() {
-  	this.player.update();
+update() {
+	this.player.update();
 
 	if (!this.player.getData("isDead")) {
 		if (this.keyW.isDown) {
-		  this.player.moveUp();
+			this.player.moveUp();
 		}
 		else if (this.keyS.isDown) {
-		  this.player.moveDown();
+			this.player.moveDown();
 		}
 
 		if (this.keyA.isDown) {
-		  this.player.moveLeft();
+			this.player.moveLeft();
 		}
 		else if (this.keyD.isDown) {
-		  this.player.moveRight();
+			this.player.moveRight();
 		}
 
 		if (this.keySpace.isDown) {
-		  this.player.setData("isShooting", true);
+			this.player.setData("isShooting", true);
 		}
 		else {
-		  this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
-		  this.player.setData("isShooting", false);
+			this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
+			this.player.setData("isShooting", false);
 		}
 
 	}
@@ -225,81 +257,81 @@ class SceneMain extends Phaser.Scene {
 		this.enemyBoss = new EnemyShipBoss(
 			this, 
 			this.game.config.width * 0.5,
-		  	0,
-		  	"sprEnemy2"
-		  	);
+			0,
+			"sprEnemy2"
+			);
 		this.enemyBoss.displayWidth=game.config.width*.5;
 		this.enemyBoss.scaleY = this.enemyBoss.scaleX;
 	}
 
 	for (var i = 0; i < this.enemies.getChildren().length; i++) {
-      var enemy = this.enemies.getChildren()[i];
+		var enemy = this.enemies.getChildren()[i];
 
-      enemy.update();
+		enemy.update();
 
-      if (enemy.x < -enemy.displayWidth ||
-	    enemy.x > this.game.config.width + enemy.displayWidth ||
-	    enemy.y < -enemy.displayHeight * 4 ||
-	    enemy.y > this.game.config.height + enemy.displayHeight) {
+		if (enemy.x < -enemy.displayWidth ||
+			enemy.x > this.game.config.width + enemy.displayWidth ||
+			enemy.y < -enemy.displayHeight * 4 ||
+			enemy.y > this.game.config.height + enemy.displayHeight) {
 
-	    if (enemy) {
-	      if (enemy.onDestroy !== undefined) {
-	        enemy.onDestroy();
-	      }
-	      enemy.destroy();
-	    }
+			if (enemy) {
+				if (enemy.onDestroy !== undefined) {
+					enemy.onDestroy();
+				}
+				enemy.destroy();
+			}
 
-	  }
-    }
+		}
+	}
 
     //frustum culling
     for (var i = 0; i < this.enemyLasers.getChildren().length; i++) {
-      var laser = this.enemyLasers.getChildren()[i];
-      laser.update();
+    	var laser = this.enemyLasers.getChildren()[i];
+    	laser.update();
 
-      if (laser.x < -laser.displayWidth ||
-        laser.x > this.game.config.width + laser.displayWidth ||
-        laser.y < -laser.displayHeight * 4 ||
-        laser.y > this.game.config.height + laser.displayHeight) {
-        if (laser) {
-          laser.destroy();
-        }
-      }
+    	if (laser.x < -laser.displayWidth ||
+    		laser.x > this.game.config.width + laser.displayWidth ||
+    		laser.y < -laser.displayHeight * 4 ||
+    		laser.y > this.game.config.height + laser.displayHeight) {
+    		if (laser) {
+    			laser.destroy();
+    		}
+    	}
     }
 
     for (var i = 0; i < this.playerLasers.getChildren().length; i++) {
-      var laser = this.playerLasers.getChildren()[i];
-      laser.update();
+    	var laser = this.playerLasers.getChildren()[i];
+    	laser.update();
 
-      if (laser.x < -laser.displayWidth ||
-        laser.x > this.game.config.width + laser.displayWidth ||
-        laser.y < -laser.displayHeight * 4 ||
-        laser.y > this.game.config.height + laser.displayHeight) {
-        if (laser) {
-          laser.destroy();
-        }
-      }
+    	if (laser.x < -laser.displayWidth ||
+    		laser.x > this.game.config.width + laser.displayWidth ||
+    		laser.y < -laser.displayHeight * 4 ||
+    		laser.y > this.game.config.height + laser.displayHeight) {
+    		if (laser) {
+    			laser.destroy();
+    		}
+    	}
     }
 
     // // background warping
     // for (var i = 0; i < this.backgrounds.length; i++) {
     //   this.backgrounds[i].update();
     // }
-  }
+}
 
-  getEnemiesByType(type) {
-	  var arr = [];
-	  for (var i = 0; i < this.enemies.getChildren().length; i++) {
-	    var enemy = this.enemies.getChildren()[i];
-	    if (enemy.getData("type") == type) {
-	      arr.push(enemy);
-	    }
-	  }
-	  return arr;
+getEnemiesByType(type) {
+	var arr = [];
+	for (var i = 0; i < this.enemies.getChildren().length; i++) {
+		var enemy = this.enemies.getChildren()[i];
+		if (enemy.getData("type") == type) {
+			arr.push(enemy);
+		}
 	}
+	return arr;
+}
 
-  updateScore() {
-  	this.score += 1;
-    this.scoreText.setText('Score: ' + this.score);
-  }
+updateScore() {
+	this.score += 1;
+	this.scoreText.setText('Score: ' + this.score);
+}
 }

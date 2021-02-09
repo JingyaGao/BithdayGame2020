@@ -8,7 +8,8 @@ var config = {
   type: Phaser.AUTO,
   width: 480, //canvas_width, //window.innerWidth * window.devicePixelRatio, //480,
   height: 700, //canvas_height,//window.innerHeight * window.devicePixelRatio, //640,
-  backgroundColor: "black",
+  backgroundColor: "white",
+  transparent: true,
   physics: {
     default: "arcade",
     arcade: {
@@ -23,7 +24,8 @@ var config = {
   	SceneMainMenu,
     SceneMain,
     SceneGameOver,
-    SceneFallingSpaceShip
+    SceneFallingSpaceShip,
+    SceneVisualNovel
     ],
   pixelArt: true,
   roundPixels: true

@@ -16,6 +16,7 @@ class SceneMainMenu extends Phaser.Scene {
 	this.load.image("sprBtnRestart", "content/sprBtnRestart.png");
 	this.load.image("sprBtnRestartHover", "content/sprBtnRestartHover.png");
 	this.load.image("sprBtnRestartDown", "content/sprBtnRestartDown.png");
+	this.load.image("whiteBackground", "content/whiteBackground.png");
 
 	// this.load.audio("sndBtnOver", "content/sndBtnOver.wav");
 	// this.load.audio("sndBtnDown", "content/sndBtnDown.wav");
@@ -53,7 +54,8 @@ class SceneMainMenu extends Phaser.Scene {
 
 	this.btnPlay.on("pointerup", function() {
 	  this.btnPlay.setTexture("sprBtnPlay");
-	  this.scene.start("SceneMain");
+	  //this.scene.start("SceneMain");
+	  this.scene.transition({target:'SceneVisualNovel', duration:500});
 	}, this);
 
 	this.title = this.add.text(this.game.config.width * 0.5, 128, "开始游戏", {
