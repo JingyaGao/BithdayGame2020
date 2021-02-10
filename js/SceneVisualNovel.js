@@ -2,11 +2,6 @@ class SceneVisualNovel extends Phaser.Scene {
   constructor() {
     super({ key: "SceneVisualNovel" });
     this.junObject;
-    // this.junMad;
-    // this.junMadCloseEyes;
-    // this.junOpenMouth;
-    // this.junOpenMouthCloseEyes;
-
     this.background;
 
     this.textBox;
@@ -60,9 +55,10 @@ class SceneVisualNovel extends Phaser.Scene {
 
     this.textBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 150 , "textBox").setAlpha(0);
     this.textBox.setDepth(3);
-
-    // set up choice buttons 
-    this.setupChoiceBoxes();
+    this.textBox.setInteractive();
+    this.textBox.on("pointerup", function() {
+      this.moveToNextLine();
+    }, this);
 
     this.dialogText = this.add.text(65, this.cameras.main.height - this.textBox.height + 70, "", {
       fontFamily: 'fondolHei', 
@@ -80,9 +76,8 @@ class SceneVisualNovel extends Phaser.Scene {
     })
     this.nameText.setDepth(5);
 
-    //var message1 = "测试测试测试测试";
-
-    //this.displayLetterByLetterText(this.dialogText, message1, message1.length);
+    // set up choice buttons 
+    this.setupChoiceBoxes();
 
     // try{
     //   let story = fs.readFileSync('story/story.yaml', 'utf8');
@@ -96,13 +91,19 @@ class SceneVisualNovel extends Phaser.Scene {
     console.log(story);
     this.storyArray = story.split('\n');
 
-    this.input.on('pointerdown', this.moveToNextLine, this);
+    //this.input.on('pointerdown', this.moveToNextLine, this);
+    this.time.addEvent({
+      delay: 1000,
+      callback: ()=>{
+        this.moveToNextLine();
+      },
+      loop: false
+    });
 
   }
 
   
   update() {
-
     // check for clicking
     // if yes, read the next line
   }
@@ -118,10 +119,10 @@ class SceneVisualNovel extends Phaser.Scene {
     }, this);
     this.btnChoice.on("pointerdown", function() {
       this.btnChoice.setTexture("choiceBoxPressed");
-      this.removeChoiceBoxes();
+      
     }, this);
     this.btnChoice.on("pointerup", function() {
-      
+      this.removeChoiceBoxes();
       this.moveToNextLine();
     }, this);
 
@@ -135,9 +136,10 @@ class SceneVisualNovel extends Phaser.Scene {
     }, this);
     this.btnChoice2.on("pointerdown", function() {
       this.btnChoice2.setTexture("choiceBoxPressed");
-      this.removeChoiceBoxes();
+
     }, this);
     this.btnChoice2.on("pointerup", function() {
+      this.removeChoiceBoxes();
       this.moveToNextLine();
     }, this);
 
@@ -275,7 +277,8 @@ class SceneVisualNovel extends Phaser.Scene {
       this.tweens.add({
         targets: object,
         duration: 2500,
-        alpha: 1
+        alpha: 1,
+        delay:2500
       });
     } else if(effect == "DISPLAY") {
       object.setAlpha(alpha);

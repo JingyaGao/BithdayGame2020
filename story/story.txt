@@ -1,12 +1,12 @@
-choice single: ...
-choice single: ...这里是？
 show textBox:DISPLAY
 ？？？: ...醒...醒醒............你还好吗？.........
+choice single: ...
+choice single: ...唔...好痛
+show background:FADE
+show jun junNormal:FADE
 choice double:
 这里是哪里？
 喵喵喵喵喵？
-show background:FADE
-show jun junNormal:FADE
 ？？？: ...你是？
 choice double:
 喵~向您介绍
