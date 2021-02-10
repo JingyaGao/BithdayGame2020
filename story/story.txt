@@ -1,28 +1,35 @@
 choice single: ...
 choice single: ...这里是？
-???: ...醒...醒醒......
+show textBox:DISPLAY
+？？？: ...醒...醒醒............你还好吗？.........
 choice double:
- 这里是哪里？
- 喵喵喵喵喵？
-show jun normal: FADE
-show background: FADE
-???: ...你是？
-choice:
-    喵~向您介绍, 现在站在你面前的...
-    是宇宙无敌神勇飞喵号宇宙飞船船长！喵喵！
-???: 噢！所以就是，猫对吧？
-???: 而且还会说话？！
+这里是哪里？
+喵喵喵喵喵？
+show background:FADE
+show jun junNormal:FADE
+？？？: ...你是？
 choice double:
-    ...是，没错啦！
-    喵喵~
-jun: 会说人话，那就好办了！
-jun: 你可以叫我文店长。
-jun: 我家咖啡店被你的飞船砸了。
+喵~向您介绍
+现在站在你面前的...
+choice single: 是宇宙无敌神勇飞喵号宇宙飞船船长！喵喵！
+show jun junOpenMouth:
+？？？: 噢！所以就是，猫对吧？
+？？？: 而且还会说话？！
+choice double:
+...是，没错啦！
+喵喵~
+show jun junOpenMouthCloseEyes:
+？？？: 会说人话，那就好办了！
+文店长: 你可以叫我文店长。
+show jun junMad:
+文店长: 我家咖啡店被你的飞船砸了。
 choice single: 是飞喵号，喵！
-jun: 那飞喵号船长，你想要怎么赔偿呢？
+文店长: 那飞喵号船长，你想要怎么赔偿呢？
 choice double:
-    你放心喵，本船长一定会赔偿的
-    只要等我的飞船修复完毕，重返喵星！
-jun: 噢！所以……？
+你放心喵，本船长一定会赔偿的
+只要等我的飞船修复完毕，重返喵星！
+show jun junNormal:
+文店长: 噢！所以……？
 choice single: 我要修飞船，喵！
-jun: 那巧了，来打工吧。
+show jun junOpenMouth:
+文店长: 那巧了，来打工吧。

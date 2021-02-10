@@ -1,7 +1,7 @@
 class SceneVisualNovel extends Phaser.Scene {
   constructor() {
     super({ key: "SceneVisualNovel" });
-    this.wholeBody;
+    this.junObject;
     // this.junMad;
     // this.junMadCloseEyes;
     // this.junOpenMouth;
@@ -9,21 +9,25 @@ class SceneVisualNovel extends Phaser.Scene {
 
     this.background;
 
+    this.textBox;
     this.dialogText;
     this.nameText;
+    this.currentMessage;
     this.counter = 0;
     this.storyArray;
     this.storyProgress = 0;
+    this.textTimer;
 
     this.btnChoice;
     this.btnChoice2;
     this.choiceBoxText;
     this.choiceBox2Text;
+    this.waitingForChoice = false;
 
   }
 
   preload() {
-    this.load.image("wholeBody", "content/wholeBody.png");
+    this.load.image("junNormal", "content/wholeBody.png");
     this.load.image("junMad", "content/mad.png");
     this.load.image("junMadCloseEyes", "content/madCloseEyes.png");
     this.load.image("junOpenMouth", "content/openMouth.png");
@@ -44,47 +48,31 @@ class SceneVisualNovel extends Phaser.Scene {
   }
 
   create() {
-    this.wholeBody = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height/2 + 20,"junMad").setAlpha(0);
-    // let scaleX = this.cameras.main.width / this.wholeBody.width;
-    // let scaleY = this.cameras.main.height / this.wholeBody.height;
-    // let scale = Math.max(scaleX, scaleY);
-    //this.wholeBody.setScale(0.95).setScrollFactor(0);
-    this.wholeBody.setDepth(2);
-    //this.wholeBody.setTexture("junMadCloseEyes");
+    this.junObject = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height/2 + 20,"junNormal").setAlpha(0);
+    this.junObject.setDepth(2);
 
-    this.background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"background");
+    this.background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"background").setAlpha(0);
     let scaleX = this.cameras.main.width / this.background.width;
     let scaleY = this.cameras.main.height / this.background.height;
     let scale = Math.max(scaleX, scaleY);
     this.background.setScale(scale).setScrollFactor(0);
     this.background.setDepth(1);
 
-    const textBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 150 , "textBox").setAlpha(0.85);
-    textBox.setDepth(3);
-
-    //const choiceBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 4, "choiceBox").setAlpha(0.85);
-    //const choiceBox2 = this.add.image(this.cameras.main.width / 2, 2 *this.cameras.main.height / 5, "choiceBox").setAlpha(0.85);
-    //choiceBox.setDepth(3);
-    //choiceBox2.setDepth(3);
+    this.textBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 150 , "textBox").setAlpha(0);
+    this.textBox.setDepth(3);
 
     // set up choice buttons 
     this.setupChoiceBoxes();
 
-    this.tweens.add({
-      targets: this.wholeBody,
-      duration: 2500,
-      alpha: 1
-    });
-
-    this.dialogText = this.add.text(35, this.cameras.main.height - textBox.height + 70, "测试测试测试测试", {
+    this.dialogText = this.add.text(65, this.cameras.main.height - this.textBox.height + 70, "", {
       fontFamily: 'fondolHei', 
       fontSize: 25,
-      padding: {left: 30, buttom: 10},
+      padding: {buttom: 20},
       color: '#ffffff'
     })
     this.dialogText.setDepth(5);
 
-    this.nameText = this.add.text(35, this.cameras.main.height - textBox.height + 22, "测试", {
+    this.nameText = this.add.text(35, this.cameras.main.height - this.textBox.height + 22, "", {
       fontFamily: 'fondolHei', 
       fontSize: 25,
       padding: {left: 30, buttom: 10},
@@ -92,9 +80,9 @@ class SceneVisualNovel extends Phaser.Scene {
     })
     this.nameText.setDepth(5);
 
-    var message1 = "测试测试测试测试";
+    //var message1 = "测试测试测试测试";
 
-    this.displayLetterByLetterText(this.dialogText, message1, message1.length);
+    //this.displayLetterByLetterText(this.dialogText, message1, message1.length);
 
     // try{
     //   let story = fs.readFileSync('story/story.yaml', 'utf8');
@@ -120,7 +108,7 @@ class SceneVisualNovel extends Phaser.Scene {
   }
 
   setupChoiceBoxes() {
-    this.btnChoice = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 4, "choiceBox").setAlpha(0).setDepth(3);
+    this.btnChoice = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 3, "choiceBox").setAlpha(0).setDepth(3);
     this.btnChoice.setInteractive();
     this.btnChoice.on("pointerover", function() {
       this.btnChoice.setTexture("choiceBoxPressed");
@@ -130,13 +118,14 @@ class SceneVisualNovel extends Phaser.Scene {
     }, this);
     this.btnChoice.on("pointerdown", function() {
       this.btnChoice.setTexture("choiceBoxPressed");
+      this.removeChoiceBoxes();
     }, this);
     this.btnChoice.on("pointerup", function() {
-      this.btnChoice.setAlpha(0);
-      this.btnChoice2.setAlpha(0);
+      
+      this.moveToNextLine();
     }, this);
 
-    this.btnChoice2 = this.add.sprite(this.cameras.main.width / 2, 2* this.cameras.main.height / 5, "choiceBox").setAlpha(0).setDepth(3);
+    this.btnChoice2 = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, "choiceBox").setAlpha(0).setDepth(3);
     this.btnChoice2.setInteractive();
     this.btnChoice2.on("pointerover", function() {
       this.btnChoice2.setTexture("choiceBoxPressed");
@@ -146,14 +135,14 @@ class SceneVisualNovel extends Phaser.Scene {
     }, this);
     this.btnChoice2.on("pointerdown", function() {
       this.btnChoice2.setTexture("choiceBoxPressed");
+      this.removeChoiceBoxes();
     }, this);
     this.btnChoice2.on("pointerup", function() {
-      this.btnChoice.setAlpha(0);
-      this.btnChoice2.setAlpha(0);
+      this.moveToNextLine();
     }, this);
 
 
-    this.boxChoiceText = this.add.text(100, (this.cameras.main.height / 4) - 12, "", {
+    this.boxChoiceText = this.add.text(100, (this.cameras.main.height / 3) - 12, "", {
       fontFamily: 'fondolHei', 
       fontSize: 25,
       padding: {left: 30, buttom: 10},
@@ -161,7 +150,7 @@ class SceneVisualNovel extends Phaser.Scene {
     })
     this.boxChoiceText.setDepth(5);
 
-    this.boxChoice2Text = this.add.text(100, (2* this.cameras.main.height / 5) - 12, "", {
+    this.boxChoice2Text = this.add.text(100, ( this.cameras.main.height / 2) - 12, "", {
       fontFamily: 'fondolHei', 
       fontSize: 25,
       padding: {left: 30, buttom: 10},
@@ -170,88 +159,126 @@ class SceneVisualNovel extends Phaser.Scene {
     this.boxChoice2Text.setDepth(5);
   }
 
-  displayNextLetter() {
-
-    this.textObject.text = this.message.substr(0, this.counter);
-    this.counter += 1;
-
-  }
-
-  // displayLetterByLetterText(textObject, message, onCompleteCallback) {
-
-  //     var timerEvent = game.time.events.repeat(80, message.length, displayNextLetter, 
-  //                                 { textObject: textObject, message: message, counter: 1 });
-
-  //     timerEvent.timer.onComplete.addOnce(onCompleteCallback, this);
-
-  // }
-
   displayLetterByLetterText(textObject, message, len) {
-
-      var timer = this.time.addEvent({
-        delay: 100,
-        callback: function() {
-          textObject.text = message.substr(0, this.counter);
-          if(this.counter == len) {
-            this.counter = 0;
-          } else {
-            this.counter += 1;
-          }
-        },
-        callbackScope: this, 
-        repeat: len
-      })
+    this.textTimer = this.time.addEvent({
+      delay: 100,
+      callback: function() {
+        textObject.text = message.substr(0, this.counter);
+        if(this.counter == len) {
+          this.counter = 0;
+        } else {
+          this.counter += 1;
+        }
+      },
+      callbackScope: this, 
+      repeat: len
+    })
   }
 
   moveToNextLine() {
-    var line = this.storyArray[this.storyProgress];
-    var subjectLine = line.split(":");
-    console.log("subject line: " + subjectLine);
-
-    //contains subject title and description
-    var subject = subjectLine[0].split(" ");
-    console.log("subject: " + subject);
-    var message = "skip message " + this.storyProgress;
-
-    switch(subject[0]) {
-      case "???":
-        message = subjectLine[1];
-        break;
-      case "jun":
-        message = subjectLine[1];
-        break;
-      case "choice":
-        if(subject[1] === "single") {
-          //display one choice box
-          this.btnChoice.setAlpha(0.85);
-          message = subjectLine[1];
-          this.boxChoiceText.text = message;
-
-
-        } else if(subject[1] === "double") {
-          //display two choice boxes
-        }
-        break;
-      case "show":
-        if(subject[1] === "jun") {
-          //show jun, depending on expression
-        } else if(subject[1] === "background") {
-          //show shop
-        }
-        break;
-      default:
-        console.log("error decoding [subject] from story.txt");
+    // if choices are available, do not advance the story until a choice is clicked
+    if(this.waitingForChoice == true) {
+      // do nothing and return
+      return;
+    }
+    if(this.storyProgress >= this.storyArray.length) {
+      // end visual novel scene;
+      // fade out to white/main screen/play again
+      return;
     }
 
-    this.storyProgress++;
+    // stop the timer for rolling text if it hasn't ended
+    if(this.textTimer != null && this.textTimer.getOverallProgress() < 1) {
+      console.log("timer progress: " + this.textTimer.getOverallProgress().toFixed(2) + " " + this.currentMessage);
+      this.textTimer.remove();
+      this.dialogText.text = this.currentMessage;
+      this.counter = 0;
+      return;
+    }
 
-    //var message2 = "......";
-    console.log(message);
-    this.displayLetterByLetterText(this.dialogText, message, message.length);
+    do {
+      var line = this.storyArray[this.storyProgress].replace(/\r?\n|\r/, "");
+      var subjectLine = line.split(":");
+
+      //contains subject title and description
+      var subject = subjectLine[0].split(" ");
+      console.log("\nsubject: " + subject);
+      var message = subjectLine[1];
+      message = this.splitMessage(message);
+
+      var name = subject[0];
+      switch(name) {
+        case "choice":
+          this.waitingForChoice = true;
+          if(subject[1] === "single") {
+            //display one choice box
+            this.btnChoice.setAlpha(0.85);
+            this.boxChoiceText.text = message;
+
+          } else if(subject[1] === "double") {
+            //display two choice boxes, retrieve next two lines
+            this.btnChoice.setAlpha(0.85);
+            this.boxChoiceText.text = this.storyArray[this.storyProgress+1];
+
+            this.btnChoice2.setAlpha(0.85);
+            this.boxChoice2Text.text = this.storyArray[this.storyProgress+2];
+            this.storyProgress += 2;
+          }
+          break;
+        case "show":
+          var object = subject[1];
+          if(object === "jun") {
+            //show jun, depending on expression
+            this.displayObject(this.junObject, subject[2], subjectLine[1]);
+          } else if(object === "background") {
+            this.displayObject(this.background, null, subjectLine[1]);
+          } else if(object === "textBox") {
+            this.displayObject(this.textBox, null, subjectLine[1], 0.85);
+          }
+          break;
+        default:
+          this.nameText.text = name;
+          this.currentMessage = message;
+          this.displayLetterByLetterText(this.dialogText, this.currentMessage, this.currentMessage.length);
+          //console.log("error decoding [subject] from story.txt");
+      }
+      this.storyProgress++;
+      console.log("counter: " + this.counter + " msg: " + this.storyProgress + " " + this.currentMessage);
+    } while (name == "show");
   }
 
-  splitMessage(str) {
+  splitMessage(message) {
     // split the message into array of strings if the given str has more than 13 caracters
+    let messageSplit = message;
+    //messageSplit.replace(/./gi, "");
+    let len = messageSplit.length;
+    if(len >= 14) {
+      messageSplit = message.slice(0, 14) +　"\n" + message.slice(14, len);
+    } 
+    return messageSplit;
+  }
 
+  removeChoiceBoxes() {
+      this.btnChoice.setAlpha(0);
+      this.btnChoice2.setAlpha(0);
+      this.boxChoiceText.text = "";
+      this.boxChoice2Text.text = "";
+      this.waitingForChoice = false;
+  }
+
+  displayObject(object, variation, effect, alpha = 1) {
+    if(variation != null) {
+      object.setTexture(variation);
+    }
+    
+    if(effect === "FADE") {
+      this.tweens.add({
+        targets: object,
+        duration: 2500,
+        alpha: 1
+      });
+    } else if(effect == "DISPLAY") {
+      object.setAlpha(alpha);
+    }
   }
 }
