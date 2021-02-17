@@ -1,35 +1,32 @@
 show textBox:DISPLAY
-？？？: ...醒...醒醒............你还好吗？.........
-choice single: ...
-choice single: ...唔...好痛
+？？？: ...醒醒，醒醒。
+choice single: 到地球了吗？
 show background:FADE
 show jun junNormal:FADE
-choice double:
-这里是哪里？
-喵喵喵喵喵？
-？？？: ...你是？
+？？？: 到了，在我家。
+choice single: 你是谁？
+文俊辉: 文俊辉，Moon Coffee店长。
+文俊辉: 你是？
 choice double:
 喵~向您介绍
 现在站在你面前的...
-choice single: 是宇宙无敌神勇飞喵号宇宙飞船船长！喵喵！
+choice single: 是飞喵号船长！喵喵！
 show jun junOpenMouth:
-？？？: 噢！所以就是，猫对吧？
-？？？: 而且还会说话？！
+文俊辉: 噢！所以就是，猫对吧？
+文俊辉: 而且还会说话？！
 choice double:
-...是，没错啦！
-喵喵~
+是宇宙无敌……
+好吧是猫。
 show jun junOpenMouthCloseEyes:
-？？？: 会说人话，那就好办了！
-文店长: 你可以叫我文店长。
+文俊辉: 会说人话，那就好办了！
 show jun junMad:
-文店长: 我家咖啡店被你的飞船砸了。
+文俊辉: 我家咖啡店被你的飞船砸了。
 choice single: 是飞喵号，喵！
-文店长: 那飞喵号船长，你想要怎么赔偿呢？
-choice double:
-你放心喵，本船长一定会赔偿的
-只要等我的飞船修复完毕，重返喵星！
 show jun junNormal:
-文店长: 噢！所以……？
+文俊辉: 那飞喵号船长
+文俊辉: 你想要怎么赔偿呢？
+choice single:飞船修复完毕就赔！
+文俊辉: 噢！所以……？
 choice single: 我要修飞船，喵！
 show jun junOpenMouth:
-文店长: 那巧了，来打工吧。
+文俊辉: 那巧了，来打工吧。

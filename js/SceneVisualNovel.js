@@ -251,13 +251,17 @@ class SceneVisualNovel extends Phaser.Scene {
 
   splitMessage(message) {
     // split the message into array of strings if the given str has more than 13 caracters
-    let messageSplit = message;
+    var msgCopy = Object.assign("", message);
+    //var messageSplit = message.slice(0);
     //messageSplit.replace(/./gi, "");
+    var messageSplit = msgCopy.replace(/[A-Z|a-z]/g, "");
+    console.log(msgCopy + " replaced message: " + messageSplit);
+    //var slicedMsg;
     let len = messageSplit.length;
     if(len >= 14) {
-      messageSplit = message.slice(0, 14) +　"\n" + message.slice(14, len);
+      message = message.slice(0, 14) +　"\n" + message.slice(14, len);
     } 
-    return messageSplit;
+    return message;
   }
 
   removeChoiceBoxes() {
