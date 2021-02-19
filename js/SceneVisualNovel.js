@@ -19,6 +19,9 @@ class SceneVisualNovel extends Phaser.Scene {
     this.choiceBox2Text;
     this.waitingForChoice = false;
 
+    this.accessCode;
+    this.score;
+
   }
 
   preload() {
@@ -29,6 +32,7 @@ class SceneVisualNovel extends Phaser.Scene {
     this.load.image("junOpenMouthCloseEyes", "content/openMouthCloseEyes.png");
 
     this.load.image("background", "content/background.png");
+    this.load.image("whiteBackground", "content/whiteBackground.png");
     this.load.image("textBox", "content/textBox.png");
     this.load.image("choiceBox", "content/choiceBox.png");
     this.load.image("choiceBoxPressed", "content/choiceBoxPressed.png");
@@ -42,7 +46,10 @@ class SceneVisualNovel extends Phaser.Scene {
     this.load.text("story", "story/story.txt");
   }
 
-  create() {
+  create(data) {
+    this.accessCode = data.accessCode;
+    this.score = data.score;
+
     this.junObject = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height/2 + 20,"junNormal").setAlpha(0);
     this.junObject.setDepth(2);
 
@@ -52,6 +59,7 @@ class SceneVisualNovel extends Phaser.Scene {
     let scale = Math.max(scaleX, scaleY);
     this.background.setScale(scale).setScrollFactor(0);
     this.background.setDepth(1);
+    this.whiteBackground - this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"whiteBackground").setAlpha(0);
 
     this.textBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 150 , "textBox").setAlpha(0);
     this.textBox.setDepth(3);
@@ -186,6 +194,13 @@ class SceneVisualNovel extends Phaser.Scene {
     if(this.storyProgress >= this.storyArray.length) {
       // end visual novel scene;
       // fade out to white/main screen/play again
+      this.tweens.add({
+        targets: this.whiteBackground,
+        duration: 2500,
+        alpha: 1,
+        delay:2500
+      });
+      this.scene.start("SceneGameOver", {score: this.score, accessCode: this.accessCode});
       return;
     }
 

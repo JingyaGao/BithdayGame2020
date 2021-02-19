@@ -1,75 +1,94 @@
+var highScore = [];
+highScoreName = [];
+var highscoreList;
+
 class SceneGameOver extends Phaser.Scene {
   constructor() {
     super({ key: "SceneGameOver" });
   }
 
-  create() {
+  preload() {
+    this.load.html('restart_form', 'html/endGame_form.html');
+    this.load.html('highscoreform', 'html/highScoreList.html');
+  }
 
-    const whiteBackground = this.add.image(480,680,"sprBg0").setAlpha(0);
+  create(data) {
+    console.log(data);
 
-    this.tweens.add({
-      targets: whiteBackground,
-      duration: 2000,
-      alpha: 1
-    });
+  	this.add.image(0,0,"sprBg2").setOrigin(0,0);
 
-  	//this.add.image(0,0,"sprBg2").setOrigin(0,0);
-
-  	this.title = this.add.text(this.game.config.width * 0.5, 128, "再试一次吧", {
-	  fontFamily: 'monospace',
+  	this.title = this.add.text(this.game.config.width * 0.5, 150, "分数：" + data.score, {
+	  fontFamily: 'helvetica',
 	  fontSize: 48,
 	  fontStyle: 'bold',
-	  color: '#ffffff',
+	  color: 'white',
 	  align: 'center'
-	});
-	this.title.setOrigin(0.5);
+	  });
+	  this.title.setOrigin(0.5);
     
- //    this.sfx = {
-	//   btnOver: this.sound.add("sndBtnOver"),
-	//   btnDown: this.sound.add("sndBtnDown")
-	// };
+    updateHighScore(data.accessCode, data.score);
 
-	this.btnRestart = this.add.sprite(
-      this.game.config.width * 0.5,
-      this.game.config.height * 0.5,
-      "sprBtnRestart"
-    );
+    highscoreList = this.add.dom(this.game.config.width * 0.5, 500).createFromCache('highscoreform').setAlpha(0);
+    setUpHighScoreBoard();
+    var element = this.add.dom(this.game.config.width * 0.5, 300).createFromCache('restart_form')
+    element.setPerspective(800);
 
-    this.btnRestart.setInteractive();
+    element.addListener('click');
 
-    this.btnRestart.on("pointerover", function() {
-      this.btnRestart.setTexture("sprBtnRestartHover"); // set the button texture to sprBtnPlayHover
-      // this.sfx.btnOver.play(); // play the button over sound
-    }, this);
-
-    this.btnRestart.on("pointerout", function() {
-      this.setTexture("sprBtnRestart");
+    element.on('click', function (event) {
+        if (event.target.name === 'loginButton')
+        {
+          window.location.replace('/index.html');
+        } 
     });
 
-    this.btnRestart.on("pointerdown", function() {
-      this.btnRestart.setTexture("sprBtnRestartDown");
-      // this.sfx.btnDown.play();
-    }, this);
-
-    this.btnRestart.on("pointerup", function() {
-      this.btnRestart.setTexture("sprBtnRestart");
-      this.scene.start("SceneMain");
-    }, this);
-
-
- //    this.backgrounds = [];
-	// for (var i = 0; i < 3; i++) {
-	//   var keys = ["sprBg4", "sprBg1"];
-	//   var key = keys[Phaser.Math.Between(0, keys.length - 1)];
-	//   var bg = new ScrollingBackground(this, key, i * 8);
-	//   this.backgrounds.push(bg);
-	// }
+    displayHighScore();
   }
 
+}
 
-  update() {
- //  	for (var i = 0; i < this.backgrounds.length; i++) {
-	//   this.backgrounds[i].update();
-	// }
-  }
+function setUpHighScoreBoard() {
+    var nameId, scoreId;
+    for(var i = 0; i < 5; i++) {
+        nameId = "name" + (i+1);
+        scoreId = "score" + (i+1);
+        highScoreName[i] = document.getElementById(nameId)
+        highScore[i] = document.getElementById(scoreId);
+    }
+}
+
+function displayHighScore() {
+    $.ajax({
+      type: 'GET',
+      url: '/scores',
+      success: function(data) {
+        console.log(data);
+        for(var j = 0; j < 5; j++)  {
+            highScore[j].innerHTML = data[j].highScore;
+            highScoreName[j].innerHTML = data[j].name;
+        }
+        highscoreList.setAlpha(1);
+        
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
+}
+
+
+function updateHighScore(accessCode, score) {
+
+  var data = { accessCode: accessCode, score: score};
+    $.ajax({
+      type: 'POST',
+      url: '/submit-score',
+      data,
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(xhr) {
+        console.log(xhr);
+      }
+    });
 }

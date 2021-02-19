@@ -123,14 +123,15 @@ class Player extends Entity {
 		  delay: 1000,
 		  callback: function() {
 		  	if(this.scene.score < 17 ) {
-		  		this.scene.scene.start("SceneVisualNovel");
+		  		this.scene.scene.start("SceneVisualNovel", {score: this.scene.score, accessCode: this.scene.accessCode} );
 		  	} else {
 		  		var t = this.game.time.create(true)
                 t.repeat(20,10,shake,this);
                 t.start();
                 t.onComplete.addOnce(resetCam,this);
       			//this.camera.fade('#000000');
-		  		this.scene.scene.start("SceneFallingSpaceShip");
+		  		
+		  		this.scene.scene.start("SceneVisualNovel", {score: this.scene.score, accessCode: this.scene.accessCode});
 		  	}
 		    
 		  },

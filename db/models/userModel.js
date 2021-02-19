@@ -10,10 +10,6 @@ const UserSchema = new Schema({
     required : true,
     unique : true
   },
-  // password : {
-  //   type : String,
-  //   required : true
-  // },
   name : {
     type: String,
     required: true
@@ -24,7 +20,6 @@ const UserSchema = new Schema({
   },
   used : {
     type: Boolean,
-    required: true,
     default: false
   }
 });

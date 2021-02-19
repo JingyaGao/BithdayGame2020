@@ -29,6 +29,14 @@ router.post('/login', async (req, res, next) => {
           _id: user._id,
           accessCode: user.accessCode
         };
+
+        console.log(user);
+
+            if(user.used == false) {
+		      console.log("main.js valid user with unused code");
+		    } else {
+		      console.log("main.js valid user with used code");
+		    }
  
         const token = jwt.sign({ user: body }, 'top_secret', { expiresIn: 300 });
         const refreshToken = jwt.sign({ user: body }, 'top_secret_refresh', { expiresIn: 86400 });
@@ -36,6 +44,8 @@ router.post('/login', async (req, res, next) => {
         // store tokens in cookie
         res.cookie('jwt', token);
         res.cookie('refreshJwt', refreshToken);
+        res.cookie('accessCode', user.accessCode);
+        res.cookie('userName', user.name);
  
         // store tokens in memory
         tokenList[refreshToken] = {
@@ -46,7 +56,7 @@ router.post('/login', async (req, res, next) => {
         };
  
         //Send back the token to the user
-        return res.status(200).json({ token, refreshToken });
+        return res.status(200).json({ token, refreshToken, user });
       });
     } catch (error) {
       return next(error);

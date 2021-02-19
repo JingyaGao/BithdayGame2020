@@ -5,12 +5,14 @@ class SceneMain extends Phaser.Scene {
 		this.score = 0;
 		this.scoreText;
 		this.enemyBoss;
+		this.accessCode;
 	}
 
 	preload() {
 		// this.load.image("sprBg0", "content/sprBg0.png");
 		// this.load.image("sprBg1", "content/sprBg1.png");
-		// this.load.image("sprBg2", "content/sprBg2.png");
+		this.load.image("sprBg2", "content/sprBg2.png");
+		this.load.image("whiteBackground", "content/whiteBackground.png");
 		// this.load.image("sprBg3", "content/sprBg3.png");
 		// this.load.image("sprBg4", "content/sprBg4.png");
 		// this.load.image("sprBg5", "content/sprBg5.png");
@@ -59,9 +61,15 @@ create() {
     whiteBackground.setScale(scale).setScrollFactor(0);
     whiteBackground.setDepth(10);
 
+    var cookie1 = document.cookie;
+    console.log(cookie1);
+
+    this.accessCode = sessionStorage.getItem('accessCode');
+    //console.log(username);
 
 	this.score = 0;
-	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
+	this.scoreText = this.add.text(16, 16, 'Score: 0', { fontFamily: 'helvetica', fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
+	this.userText = this.add.text(16, 50, '订单号: ' + this.accessCode, { fontFamily: 'helvetica', fontSize: '30px', fontStyle: 'bold', fill: '#fff' });
 	this.enemyBoss = undefined;
 
 	this.anims.create({
