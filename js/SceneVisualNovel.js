@@ -3,6 +3,7 @@ class SceneVisualNovel extends Phaser.Scene {
     super({ key: "SceneVisualNovel" });
     this.junObject;
     this.background;
+    this.whiteBackground;
 
     this.textBox;
     this.dialogText;
@@ -59,7 +60,13 @@ class SceneVisualNovel extends Phaser.Scene {
     let scale = Math.max(scaleX, scaleY);
     this.background.setScale(scale).setScrollFactor(0);
     this.background.setDepth(1);
-    this.whiteBackground - this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"whiteBackground").setAlpha(0);
+
+    this.whiteBackground = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2,"whiteBackground").setAlpha(0);
+    // scaleX = this.cameras.main.width / this.background.width;
+    // scaleY = this.cameras.main.height / this.background.height;
+    // scale = Math.max(scaleX, scaleY);
+    // this.whiteBackground.setScale(scale).setScrollFactor(0);
+    this.whiteBackground.setDepth(10);
 
     this.textBox = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 150 , "textBox").setAlpha(0);
     this.textBox.setDepth(3);
@@ -194,13 +201,17 @@ class SceneVisualNovel extends Phaser.Scene {
     if(this.storyProgress >= this.storyArray.length) {
       // end visual novel scene;
       // fade out to white/main screen/play again
+      var scene = this.scene;
+      var score = this.score;
       this.tweens.add({
         targets: this.whiteBackground,
         duration: 2500,
         alpha: 1,
-        delay:2500
+        onComplete: function(tween, targets) {
+            scene.start("SceneGameOver", {score: score} );
+        }
       });
-      this.scene.start("SceneGameOver", {score: this.score, accessCode: this.accessCode});
+      //this.scene.transition("SceneGameOver", {score: this.score, accessCode: this.accessCode});
       return;
     }
 
@@ -295,9 +306,9 @@ class SceneVisualNovel extends Phaser.Scene {
     if(effect === "FADE") {
       this.tweens.add({
         targets: object,
-        duration: 2500,
+        duration: 2000,
         alpha: 1,
-        delay:2500
+        delay:2000
       });
     } else if(effect == "DISPLAY") {
       object.setAlpha(alpha);

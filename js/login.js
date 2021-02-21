@@ -94,7 +94,7 @@ function signIn(userInput) {
             console.log(data);
             if(data.user.used == false) {
                 console.log("login.js valid user with unused code");
-                title.setText('Welcome ' + data.user.name);
+                //title.setText('Welcome ' + data.user.name);
                 user = data.user;
                 sessionStorage.setItem('accessCode', data.user.accessCode);
                 window.location.replace('/game.html');
@@ -126,7 +126,7 @@ function displayHighScore() {
       url: '/scores',
       success: function(data) {
         console.log(data);
-        for(var j = 0; j < data.length; j++)  {
+        for(var j = 0; j < 5; j++)  {
             highScore[j].innerHTML = data[j].highScore;
             highScoreName[j].innerHTML = data[j].name;
         }
